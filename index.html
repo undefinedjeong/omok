@@ -211,7 +211,9 @@
         board[boardY][boardX] = currentTurn;
         const turnName = currentTurn === BLACK ? "흑" : "백";
         document.getElementById("status").textContent =
-          `{turnName}돌 위치: (${boardX + 1}, ${boardY + 1})`;
+          `${turnName}돌 위치: (${boardX + 1}, ${boardY + 1})`;
+
+        currentTurn = currentTurn === BLACK ? "백" : "흑";
     
         drawGame();
       }
