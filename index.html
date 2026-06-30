@@ -213,7 +213,7 @@
         document.getElementById("status").textContent =
           `${turnName}돌 위치: (${boardX + 1}, ${boardY + 1})`;
 
-        currentTurn = currentTurn === BLACK ? "백" : "흑";
+        currentTurn = currentTurn === BLACK ? WHITE : BLACK;
     
         drawGame();
       }
