@@ -5,7 +5,7 @@ const boardSize = 15;
 const margin = 24;
 const EMPTY = 0;
 const BLACK = 1;
-const WHITE = 0;
+const WHITE = 2;
 
 let canvasSize;
 let cellSize;
@@ -153,14 +153,14 @@ function isInsideBoard(x, y) {
 
 function resetGame() {
 
-currentTurn = BLACK;
+    currentTurn = BLACK;
 
-board = Array.from({ length: boardSize }, () =>
-    Array(boardSize).fill(EMPTY)
-);
+    board = Array.from({ length: boardSize }, () =>
+        Array(boardSize).fill(EMPTY)
+    );
 
-document.getElementById("status").textContent = "게임을 다시 시작했습니다.";
-    drawGame();
+    document.getElementById("status").textContent = "게임을 다시 시작했습니다.";
+        drawGame();
 }
 
 function changeMode() {
