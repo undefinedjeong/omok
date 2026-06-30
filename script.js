@@ -142,10 +142,9 @@ function handleCanvasInput(event) {
     const turnName = currentTurn === BLACK ? "흑" : "백";
     document.getElementById("status").textContent =
         `${turnName}돌 위치: (${boardX + 1}, ${boardY + 1})`;
+    drawGame();
 
     currentTurn = currentTurn === BLACK ? WHITE : BLACK;
-
-    drawGame();
 }
 
 function isInsideBoard(x, y) {
