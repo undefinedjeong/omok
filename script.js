@@ -14,6 +14,7 @@ let board = Array.from({ length: boardSize }, () =>
 );
 
 let currentTurn = BLACK; //흑 선
+let gameOver = false;
 
 function setupCanvas() {
     const maxWidth = Math.min(window.innerWidth - 24, 420);
@@ -117,6 +118,11 @@ function drawStone(x, y, color) {
 function handleCanvasInput(event) {
     event.preventDefault();
 
+    if(gameOver) {
+        document.getElementById("status").textContent = "게임이 종료되었습니다. 다시 시작하려면 '게임 다시 시작' 버튼을 눌러주세요.";
+        return;
+    }
+
     const rect = canvas.getBoundingClientRect();
 
     const clientX = event.clientX ?? event.touches?.[0]?.clientX;
@@ -144,11 +150,55 @@ function handleCanvasInput(event) {
         `${turnName}돌 위치: (${boardX + 1}, ${boardY + 1})`;
     drawGame();
 
+    if(checkWin(boardX, boardY, currentTurn)) {
+        gameOver = true;
+        document.getElementById("status").textContent = `${turnName}돌이 승리했습니다!`;
+        return;
+    }
+
     currentTurn = currentTurn === BLACK ? WHITE : BLACK;
 }
 
 function isInsideBoard(x, y) {
     return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
+}
+
+function checkWin(x, y, color) {
+    const directions = [
+        [1, 0],
+        [0, 1],
+        [1, 1],
+        [1, -1],
+    ];
+
+    for (const [dx, dy] of directions) {
+        const count = 1 +
+        countStones(x, y, dx, dy, color) +
+        countStones(x, y, -dx, -dy, color);
+
+        if (count >= 5) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function countStones(x, y, dx, dy, color) {
+    let count = 0;
+    let nextX = x + dx;
+    let nextY = y + dy;
+
+    while (
+        isInsideBoard(nextX, nextY) &&
+        board[nextY][nextX] === color
+    ) {
+        count++;
+        nextX += dx;
+        nextY += dy;
+    }
+
+    return count;
 }
 
 function resetGame() {
@@ -158,6 +208,8 @@ function resetGame() {
     board = Array.from({ length: boardSize }, () =>
         Array(boardSize).fill(EMPTY)
     );
+
+    gameOver = false;
 
     document.getElementById("status").textContent = "게임을 다시 시작했습니다.";
         drawGame();
